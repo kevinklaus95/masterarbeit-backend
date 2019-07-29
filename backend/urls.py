@@ -10,5 +10,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('distinct-project-ids/', views.distinct_project_ids),
-    path('start-analysis/', views.start_analysis)
+    path('start-analysis/', views.start_analysis),
+    path('start-custom-analysis/', views.start_custom_analysis)
 ]

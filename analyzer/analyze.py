@@ -74,7 +74,6 @@ class LDADataset:
 
         # build dict {entry_entry:[cleaned_up_word_array]}
         self.entry_text_dict = dict()
-
         # cleanup and prepare text of documents from lesson
         for entry in content:
 
@@ -89,6 +88,8 @@ class LDADataset:
                 positive_filter=positive_text,
                 text=entry['comment']
             )
+
+            print(word_array)
 
             self.entry_text_dict[id] = word_array
 
@@ -348,6 +349,9 @@ def analyze(content,
 
     entry_text_dict = data.entry_text_dict
 
+    cold_words = list()
+    warm_words = list()
+
     for entry in content:
 
         id = entry['id']
@@ -367,13 +371,15 @@ def analyze(content,
                         text.lower(), warm.lower()) > 90:
                     print("Warm:", text)
                     counters['Warm'] += 1
+                    warm_words.append(text)
                 if text.lower() == kalt.lower() or fuzz.ratio(
                         text.lower(), kalt.lower()) > 90:
                     print("Kalt:", text)
                     counters['Kalt'] -= 1
+                    cold_words.append(text)
 
         entry['counters'] = counters
 
     print('Dictionary done!')
 
-    return dict(lda_result=output, dictionary_result=content)
+    return dict(lda_result=output, dictionary_result=content, cold_words=cold_words, warm_words=warm_words)
